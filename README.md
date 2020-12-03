@@ -7,3 +7,6 @@ To install, copy this https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-
 **yellow:** Neutral, initial value of 20.654%  
 **green:** Upvoted  
 **red:** Downvoted
+
+## Screenshot
+![Screenshot](screenshot.png?raw=true "Screenshot of loaded script")
