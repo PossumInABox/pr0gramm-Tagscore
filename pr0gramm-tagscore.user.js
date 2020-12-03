@@ -5,7 +5,7 @@
 // @description  Userscript for the image board pr0gramm to get scores of posts tags into frontend
 // @author       PossumInAbox
 // @grant        none
-// @include		 http://pr0gramm.com*
+// @include		 https://pr0gramm.com*
 // @downloadURL  https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-tagscore.user.js
 // @updateURL    https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-tagscore.user.js
 // ==/UserScript==
