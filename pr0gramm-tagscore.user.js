@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pr0gramm Tagscore
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Userscript for the image board pr0gramm to get scores of posts tags into frontend
 // @author       PossumInABox
 // @grant        none
@@ -71,6 +71,7 @@
     }
 
 
+    // update on change post
     // see https://stackoverflow.com/a/46428962/10765287
     var oldHref = document.location.href;
 
@@ -103,6 +104,11 @@
         observer.observe(bodyList, config);
 
     };
+
+    // update on reload
+    document.onreadystatechange = () => {
+        initTagScore()
+    }
 
 
 
