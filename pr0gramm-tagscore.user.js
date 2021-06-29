@@ -13,103 +13,90 @@
 // ==/UserScript==
 
 (function tagScoreUserScript() {
-    console.debug("Loaded module: pr0gramm Tagscore")
+  console.debug("Loaded module: pr0gramm Tagscore")
 
-    function getPostId() {
-        let urlString = window.location.href;
-        let urlList0 = urlString.split('/');
-        let urlList1 = (urlList0[urlList0.length - 1]).split(':');
-        let postNumber = urlList1[0]
+  function getPostId() {
+    let urlString = window.location.href;
+    let urlList0 = urlString.split('/');
+    let urlList1 = (urlList0[urlList0.length - 1]).split(':');
+    let postNumber = urlList1[0]
 
-        if (postNumber.match("[0-9]+")) {
-            return postNumber
-        } else {
-            return false
+    if (postNumber.match("[0-9]+")) {
+      return postNumber
+    } else {
+      return false
+    }
+  }
+
+
+  async function initTagScore() {
+
+    let apiURL = ('https://pr0gramm.com/api/items/info?itemId=' + getPostId());
+    if (!apiURL) {
+      return;
+    }
+
+    let data = await fetch(apiURL, {
+      method: 'GET',
+      'headers': {}
+    })
+    data = await data.json();
+
+    let tags = data.tags;
+
+    let pageTags = document.querySelectorAll('.tags .tag');
+
+    for (let k = 0; k < pageTags.length; k++) {
+
+      let currentItem = pageTags[k];
+      let nodeId = currentItem.id;
+
+
+      for (let i = 0; i < tags.length; i++) {
+        let currentTagMatch = 'tag-' + tags[i].id;
+        if (currentTagMatch == nodeId) {
+          let roundedConfidence = (tags[i].confidence * 100).toFixed(3);
+          let tagClass = 'baseValue';
+          if (roundedConfidence > 20.654) {
+            tagClass = 'upvotedTag';
+          } else if (roundedConfidence < 20.654) {
+            tagClass = 'downvotedTag'
+          }
+          let confidenceString = (' | <span class="' + tagClass + '">' + roundedConfidence + ' %</span>');
+          currentItem.querySelector("a").innerHTML += confidenceString;
+
+          document.querySelectorAll(".baseValue").forEach(element => {
+            element.style.color = "yellow"
+          })
+          document.querySelectorAll(".upvotedTag").forEach(element => {
+            element.style.color = "green"
+          })
+          document.querySelectorAll(".downvotedTag").forEach(element => {
+            element.style.color = "red"
+          })
         }
+      }
+    }
+  }
+
+  var oldURL = "";
+  var currentURL = window.location.href;
+
+  function checkURLchange(currentURL) {
+    if (currentURL != oldURL) {
+      initTagScore();
+      oldURL = currentURL;
     }
 
+    oldURL = window.location.href;
+    setTimeout(function() {
+      checkURLchange(window.location.href);
+    }, 500);
+  }
+  checkURLchange();
 
-    async function initTagScore() {
-
-        let apiURL = ('https://pr0gramm.com/api/items/info?itemId=' + getPostId());
-        if (!apiURL) {return;}
-
-        let data = await fetch(apiURL, {method: 'GET', 'headers': {}})
-        data = await data.json();
-
-        let tags = data.tags;
-
-        let pageTags = document.querySelectorAll('.tags .tag');
-
-        for (let k = 0; k < pageTags.length; k++) {
-
-            let currentItem = pageTags[k];
-            let nodeId = currentItem.id;
-
-
-            for (let i = 0; i < tags.length; i++) {
-                let currentTagMatch = 'tag-' + tags[i].id;
-                if (currentTagMatch == nodeId) {
-                    let roundedConfidence = (tags[i].confidence * 100).toFixed(3);
-                    let tagClass = 'baseValue';
-                    if (roundedConfidence > 20.654) {
-                        tagClass = 'upvotedTag';
-                    } else if (roundedConfidence < 20.654) {
-                        tagClass = 'downvotedTag'
-                    }
-                    let confidenceString = (' | <span class="' + tagClass + '">' + roundedConfidence + ' %</span>');
-                    currentItem.querySelector("a").innerHTML += confidenceString;
-
-                    document.querySelectorAll(".baseValue").forEach(element => {element.style.color = "yellow"})
-                    document.querySelectorAll(".upvotedTag").forEach(element => {element.style.color = "green"})
-                    document.querySelectorAll(".downvotedTag").forEach(element => {element.style.color = "red"})
-                }
-            }
-        }
-
-
-    }
-
-
-    // update on change post
-    // see https://stackoverflow.com/a/46428962/10765287
-    var oldHref = document.location.href;
-
-    window.onload = function() {
-
-        var
-            bodyList = document.querySelector("body")
-
-            ,observer = new MutationObserver(function(mutations) {
-
-                mutations.forEach(function(mutation) {
-
-                    if (oldHref != document.location.href) {
-
-                        oldHref = document.location.href;
-
-                        initTagScore();
-
-                    }
-
-                });
-
-            });
-
-        var config = {
-            childList: true,
-            subtree: true
-        };
-
-        observer.observe(bodyList, config);
-
-    };
-
-    // update on reload
-    document.onreadystatechange = () => {
-        initTagScore()
-    }
-
-
-
+  // update on reload
+  document.onreadystatechange = () => {
+    initTagScore()
+  }
 })();
