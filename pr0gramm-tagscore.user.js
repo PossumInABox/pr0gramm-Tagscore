@@ -6,8 +6,6 @@
 // @author       PossumInABox
 // @grant        none
 // @include		 https://pr0gramm.com*
-// @exclude      http://full.pr0gramm.com*
-// @exclude		 https://full.pr0gramm.com*
 // @downloadURL  https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-tagscore.user.js
 // @updateURL    https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-tagscore.user.js
 // ==/UserScript==
@@ -39,7 +37,7 @@
 
         let tags = data.tags;
 
-        let pageTags = document.querySelectorAll('.tags .tag');
+        let pageTags = document.querySelectorAll(".tag");
 
         for (let k = 0; k < pageTags.length; k++) {
 
