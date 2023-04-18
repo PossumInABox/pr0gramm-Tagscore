@@ -44,7 +44,6 @@
             let currentItem = pageTags[k];
             let nodeId = currentItem.id;
 
-
             for (let i = 0; i < tags.length; i++) {
                 let currentTagMatch = 'tag-' + tags[i].id;
                 if (currentTagMatch == nodeId) {
@@ -64,50 +63,34 @@
                 }
             }
         }
-
-
     }
-
 
     // update on change post
     // see https://stackoverflow.com/a/46428962/10765287
     var oldHref = document.location.href;
 
     window.onload = function() {
-
         var
             bodyList = document.querySelector("body")
-
             ,observer = new MutationObserver(function(mutations) {
-
                 mutations.forEach(function(mutation) {
 
                     if (oldHref != document.location.href) {
-
                         oldHref = document.location.href;
-
                         initTagScore();
-
                     }
-
                 });
-
             });
-
         var config = {
             childList: true,
             subtree: true
         };
-
         observer.observe(bodyList, config);
-
     };
 
     // update on reload
     document.onreadystatechange = () => {
         initTagScore()
     }
-
-
-
-})();
+  }
+)();
