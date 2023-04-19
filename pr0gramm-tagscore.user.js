@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pr0gramm Tagscore
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  Userscript for the image board pr0gramm to get scores of posts tags into frontend
 // @author       PossumInABox
 // @grant        none
