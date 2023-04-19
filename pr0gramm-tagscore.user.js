@@ -6,8 +6,6 @@
 // @author       PossumInABox
 // @grant        none
 // @include		 https://pr0gramm.com*
-// @exclude      http://full.pr0gramm.com*
-// @exclude		 https://full.pr0gramm.com*
 // @downloadURL  https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-tagscore.user.js
 // @updateURL    https://possuminabox.github.io/pr0gramm-Tagscore/pr0gramm-tagscore.user.js
 // ==/UserScript==
@@ -39,13 +37,12 @@
 
         let tags = data.tags;
 
-        let pageTags = document.querySelectorAll('.tags .tag');
+        let pageTags = document.querySelectorAll(".tag");
 
         for (let k = 0; k < pageTags.length; k++) {
 
             let currentItem = pageTags[k];
             let nodeId = currentItem.id;
-
 
             for (let i = 0; i < tags.length; i++) {
                 let currentTagMatch = 'tag-' + tags[i].id;
@@ -66,50 +63,34 @@
                 }
             }
         }
-
-
     }
-
 
     // update on change post
     // see https://stackoverflow.com/a/46428962/10765287
     var oldHref = document.location.href;
 
     window.onload = function() {
-
         var
             bodyList = document.querySelector("body")
-
             ,observer = new MutationObserver(function(mutations) {
-
                 mutations.forEach(function(mutation) {
 
                     if (oldHref != document.location.href) {
-
                         oldHref = document.location.href;
-
                         initTagScore();
-
                     }
-
                 });
-
             });
-
         var config = {
             childList: true,
             subtree: true
         };
-
         observer.observe(bodyList, config);
-
     };
 
     // update on reload
     document.onreadystatechange = () => {
         initTagScore()
     }
-
-
-
-})();
+  }
+)();
