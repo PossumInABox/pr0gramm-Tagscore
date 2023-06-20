@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pr0gramm Tagscore
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  Userscript for the image board pr0gramm to get scores of posts tags into frontend
 // @author       PossumInABox
 // @grant        none
@@ -19,7 +19,7 @@
         let urlList1 = (urlList0[urlList0.length - 1]).split(':');
         let postNumber = urlList1[0]
 
-        if (postNumber.match("[0-9]+")) {
+        if (postNumber.match(/^\d+$/)) {
             return postNumber
         } else {
             return false
@@ -29,9 +29,10 @@
 
     async function initTagScore() {
 
-        let apiURL = ('https://pr0gramm.com/api/items/info?itemId=' + getPostId());
-        if (!apiURL) {return;}
+        let postId = getPostId()
+        if (!postId) {return;}
 
+        let apiURL = ('https://pr0gramm.com/api/items/info?itemId=' + postId);
         let data = await fetch(apiURL, {method: 'GET', 'headers': {}})
         data = await data.json();
 
